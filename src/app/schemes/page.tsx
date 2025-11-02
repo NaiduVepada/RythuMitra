@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Building2, Search, ExternalLink, IndianRupee, Users, Tractor } from "lucide-react";
 
@@ -167,48 +168,56 @@ export default function SchemesPage() {
           <div className="space-y-6">
             <h2 className="text-2xl font-bold">Available Schemes</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {schemes.map((scheme, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="bg-primary/10 p-3 rounded-full">
-                        <scheme.icon className="h-6 w-6 text-primary" />
-                      </div>
-                      <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
-                        {scheme.category}
-                      </span>
-                    </div>
-                    <CardTitle className="text-xl">{scheme.title}</CardTitle>
-                    <CardDescription className="text-sm font-medium">
-                      {scheme.subtitle}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground">{scheme.description}</p>
-                    
-                    <div className="space-y-2 pt-4 border-t border-border">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">Eligibility:</span>
-                        <span className="text-sm text-muted-foreground">{scheme.eligibility}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">Benefit:</span>
-                        <span className="text-sm font-semibold text-green-600">{scheme.benefit}</span>
-                      </div>
-                    </div>
+              {schemes.map((scheme, index) => {
+                const slug = scheme.title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
 
-                    <div className="flex gap-2 pt-2">
-                      <Button className="flex-1">
-                        Apply Now
-                        <ExternalLink className="ml-2 h-4 w-4" />
-                      </Button>
-                      <Button variant="outline" className="flex-1">
-                        Learn More
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                return (
+                  <Card key={index} className="hover:shadow-lg transition-shadow">
+                    <CardHeader>
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="bg-primary/10 p-3 rounded-full">
+                          <scheme.icon className="h-6 w-6 text-primary" />
+                        </div>
+                        <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
+                          {scheme.category}
+                        </span>
+                      </div>
+                      <CardTitle className="text-xl">{scheme.title}</CardTitle>
+                      <CardDescription className="text-sm font-medium">
+                        {scheme.subtitle}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <p className="text-sm text-muted-foreground">{scheme.description}</p>
+
+                      <div className="space-y-2 pt-4 border-t border-border">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium">Eligibility:</span>
+                          <span className="text-sm text-muted-foreground">{scheme.eligibility}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium">Benefit:</span>
+                          <span className="text-sm font-semibold text-green-600">{scheme.benefit}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2 pt-2">
+                        <Link href={`/schemes/${slug}`} className="flex-1">
+                          <Button className="flex-1">
+                            Apply Now
+                            <ExternalLink className="ml-2 h-4 w-4" />
+                          </Button>
+                        </Link>
+                        <Link href={`/schemes/${slug}`} className="flex-1">
+                          <Button variant="outline" className="flex-1">
+                            Learn More
+                          </Button>
+                        </Link>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
 

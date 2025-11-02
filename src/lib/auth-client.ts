@@ -4,18 +4,22 @@ import { useEffect, useState } from "react"
 
 export const authClient = createAuthClient({
    baseURL: typeof window !== 'undefined' ? window.location.origin : process.env.NEXT_PUBLIC_SITE_URL,
-  fetchOptions: {
+   fetchOptions: {
       headers: {
-        Authorization: `Bearer ${typeof window !== 'undefined' ? localStorage.getItem("bearer_token") : ""}`,
+         Authorization: `Bearer ${typeof window !== 'undefined' ? localStorage.getItem("bearer_token") : ""}`,
       },
       onSuccess: (ctx) => {
-          const authToken = ctx.response.headers.get("set-auth-token")
-          // Store the token securely (e.g., in localStorage)
-          if(authToken){
-            // Split token at "." and take only the first part
-            const tokenPart = authToken.includes('.') ? authToken.split('.')[0] : authToken;
-            localStorage.setItem("bearer_token", tokenPart);
-          }
+         const authToken = ctx.response.headers.get("set-auth-token");
+         if (authToken) {
+            localStorage.setItem("bearer_token", authToken);
+            // Trigger a session refresh
+            setTimeout(() => authClient.refreshSession(), 0);
+         }
+      },
+      onError: (error) => {
+         if (error.status === 401) {
+            localStorage.removeItem("bearer_token");
+         }
       }
   }
 });

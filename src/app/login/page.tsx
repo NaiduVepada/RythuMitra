@@ -13,10 +13,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
 
 export default function LoginPage() {
-  const router = useRouter();
-  const { data: session, isPending } = useSession();
-  const { t } = useLanguage();
-
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <LoginPageContent />
@@ -25,6 +21,9 @@ export default function LoginPage() {
 }
 
 function LoginPageContent() {
+  const router = useRouter();
+  const { data: session, isPending } = useSession();
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -36,17 +35,16 @@ function LoginPageContent() {
   useEffect(() => {
     if (!isPending && session?.user) {
       const redirect = searchParams.get("redirect") || "/crop-advisory";
-      router.push(redirect);
+      router.replace(redirect);
     }
   }, [session, isPending, router, searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLoading) return;
     setIsLoading(true);
 
     try {
-      const redirect = searchParams.get("redirect") || "/crop-advisory";
-      
       const { error } = await authClient.signIn.email({
         email: formData.email,
         password: formData.password,
@@ -55,14 +53,22 @@ function LoginPageContent() {
       });
 
       if (error?.code) {
+        console.error('Login error:', error);
         toast.error(t("auth.login.error"));
         setIsLoading(false);
         return;
       }
 
-      toast.success("Login successful!");
-      router.push(redirect);
+      // Successful login
+      toast.success(t("auth.login.success"));
+      
+      // Wait for the session to be updated
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Force a hard navigation to the redirect URL
+      window.location.href = redirect;
     } catch (error) {
+      console.error('Login error:', error);
       toast.error(t("auth.login.error"));
       setIsLoading(false);
     }

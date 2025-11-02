@@ -19,12 +19,39 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      const form = e.currentTarget;
+      const fd = new FormData(form);
+      const payload = {
+        name: fd.get("name"),
+        phone: fd.get("phone"),
+        email: fd.get("email"),
+        subject: fd.get("subject"),
+        location: fd.get("location"),
+        message: fd.get("message"),
+      };
+
+      const res = await fetch(`/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.error || "Failed to send message");
+      }
+
       setSubmitted(true);
-    }, 2000);
+      form.reset();
+    } catch (err: any) {
+      console.error("Contact submit error:", err);
+      // Keep simple UI feedback; you can replace with a toast
+      alert(err?.message || "Failed to send message");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BookOpen, Search, Video, FileText, Download, ExternalLink } from "lucide-react";
+import Link from "next/link";
 import Image from "next/image";
 
 export default function KnowledgeHubPage() {
@@ -126,7 +127,13 @@ export default function KnowledgeHubPage() {
           <div>
             <h2 className="text-2xl font-bold mb-6">Featured Articles</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {articles.map((article, index) => (
+              {articles.map((article, index) => {
+                const slug = article.title
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")
+                  .replace(/[^a-z0-9-]/g, "");
+
+                return (
                 <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
                   <div className="relative h-48">
                     <Image
@@ -146,13 +153,16 @@ export default function KnowledgeHubPage() {
                     <CardTitle className="text-lg">{article.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <Button variant="outline" className="w-full">
-                      <FileText className="mr-2 h-4 w-4" />
-                      Read Article
-                    </Button>
+                    <Link href={`/knowledge/${slug}`} className="w-full">
+                      <Button variant="outline" className="w-full">
+                        <FileText className="mr-2 h-4 w-4" />
+                        Read Article
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -183,10 +193,12 @@ export default function KnowledgeHubPage() {
                         </p>
                       </div>
                     </div>
-                    <Button size="sm">
-                      Watch
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </Button>
+                    <Link href={`/knowledge/video/${index}`}>
+                      <Button size="sm">
+                        Watch
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
                   </div>
                 ))}
               </div>
@@ -204,34 +216,42 @@ export default function KnowledgeHubPage() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Button variant="outline" className="justify-start h-auto py-4">
-                  <FileText className="mr-3 h-5 w-5" />
-                  <div className="text-left">
-                    <p className="font-semibold">Crop Calendar 2024</p>
-                    <p className="text-xs text-muted-foreground">PDF • 2.4 MB</p>
-                  </div>
-                </Button>
-                <Button variant="outline" className="justify-start h-auto py-4">
+                <a href="/resources/crop-calendar-2024.pdf" download className="w-full">
+                  <Button variant="outline" className="justify-start h-auto py-4 w-full">
+                    <FileText className="mr-3 h-5 w-5" />
+                    <div className="text-left">
+                      <p className="font-semibold">Crop Calendar 2024</p>
+                      <p className="text-xs text-muted-foreground">PDF • 2.4 MB</p>
+                    </div>
+                  </Button>
+                </a>
+                <a href="/resources/fertilizer-application-guide.pdf" download className="w-full">
+                  <Button variant="outline" className="justify-start h-auto py-4 w-full">
                   <FileText className="mr-3 h-5 w-5" />
                   <div className="text-left">
                     <p className="font-semibold">Fertilizer Application Guide</p>
                     <p className="text-xs text-muted-foreground">PDF • 1.8 MB</p>
                   </div>
-                </Button>
-                <Button variant="outline" className="justify-start h-auto py-4">
+                  </Button>
+                </a>
+                <a href="/resources/pest-identification-chart.pdf" download className="w-full">
+                  <Button variant="outline" className="justify-start h-auto py-4 w-full">
                   <FileText className="mr-3 h-5 w-5" />
                   <div className="text-left">
                     <p className="font-semibold">Pest Identification Chart</p>
                     <p className="text-xs text-muted-foreground">PDF • 3.2 MB</p>
                   </div>
-                </Button>
-                <Button variant="outline" className="justify-start h-auto py-4">
+                  </Button>
+                </a>
+                <a href="/resources/organic-farming-manual.pdf" download className="w-full">
+                  <Button variant="outline" className="justify-start h-auto py-4 w-full">
                   <FileText className="mr-3 h-5 w-5" />
                   <div className="text-left">
                     <p className="font-semibold">Organic Farming Manual</p>
                     <p className="text-xs text-muted-foreground">PDF • 5.1 MB</p>
                   </div>
-                </Button>
+                  </Button>
+                </a>
               </div>
             </CardContent>
           </Card>

@@ -8,27 +8,34 @@ import CropAdvisorForm from "@/components/CropAdvisorForm";
 import PestManagementForm from "@/components/PestManagementForm";
 import DiseaseControlForm from "@/components/DiseaseControlForm";
 import SoilTestingForm from "@/components/SoilTestingForm";
+import { DiseasePrediction, PestPrediction } from "@/components/PredictionComponents";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sprout, Bug, Leaf, Beaker } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function CropAdvisoryPage() {
+  const { t } = useLanguage();
+  const [activeTab, setActiveTab] = useState("crop");
+
   const advisoryCards = [
     {
       title: "Crop Selection",
       description: "Get personalized crop recommendations based on soil, climate, and season.",
       icon: Sprout,
       value: "crop",
+      component: CropAdvisorForm
     },
     {
-      title: "Pest Management",
-      description: "Identify pests and get treatment recommendations to protect your crops.",
+      title: "Pest Detection",
+      description: "Upload images to identify pests and get treatment recommendations.",
       icon: Bug,
       value: "pest",
+      component: PestPrediction
     },
     {
-      title: "Disease Control",
-      description: "Early detection and management of plant diseases for healthy growth.",
+      title: "Disease Detection",
+      description: "Upload plant images for automated disease detection and treatment advice.",
       icon: Leaf,
       value: "disease",
     },

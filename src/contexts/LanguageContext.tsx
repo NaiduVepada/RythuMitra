@@ -14,7 +14,7 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 const translations: Record<Language, Record<string, string>> = {
   en: {
-    // Navbar
+    // Navigation
     "nav.home": "Home",
     "nav.cropAdvisory": "Crop Advisory",
     "nav.smartIrrigation": "Smart Irrigation",
@@ -48,6 +48,66 @@ const translations: Record<Language, Record<string, string>> = {
     "service.cropAdvisory.description": "Get expert recommendations on crop selection, soil health, and pest management tailored to your farm.",
     "service.smartIrrigation.title": "Smart Irrigation",
     "service.smartIrrigation.description": "Optimize water usage with weather-based irrigation recommendations and smart scheduling.",
+
+    // Advisory Page
+    "advisory.pageTitle": "Crop Advisory",
+    "advisory.pageDescription": "Get expert advice on crop management, pest control, and soil health",
+    
+    "advisory.crop.title": "Crop Selection",
+    "advisory.crop.description": "Get personalized crop recommendations based on soil, climate, and season",
+    
+    "advisory.pest.title": "Pest Detection",
+    "advisory.pest.description": "Upload images to identify pests and get treatment recommendations",
+    
+    "advisory.disease.title": "Disease Detection",
+    "advisory.disease.description": "Upload plant images for automated disease detection and treatment advice",
+    
+    "advisory.soil.title": "Soil Testing",
+    "advisory.soil.description": "Understand soil health and get fertilizer recommendations",
+
+    // Analysis Results
+    "analysis.confidence": "Confidence",
+    "analysis.treatment": "Recommended Treatment",
+    "analysis.description": "Description",
+    "analysis.loading": "Analyzing your image...",
+    
+    // Authentication
+    "auth.login.title": "Welcome Back",
+    "auth.login.subtitle": "Sign in to your account",
+    "auth.login.email": "Email",
+    "auth.login.password": "Password",
+    "auth.login.rememberMe": "Remember me",
+    "auth.login.submit": "Sign In",
+    "auth.login.forgotPassword": "Forgot password?",
+    "auth.login.noAccount": "Don't have an account?",
+    "auth.login.register": "Register",
+    "auth.login.error": "Invalid email or password",
+  "auth.login.success": "Login successful",
+    
+    "auth.register.title": "Create Account",
+    "auth.register.subtitle": "Join our farming community",
+    "auth.register.name": "Full Name",
+    "auth.register.email": "Email",
+    "auth.register.password": "Password",
+    "auth.register.confirmPassword": "Confirm Password",
+    "auth.register.submit": "Register",
+    "auth.register.hasAccount": "Already have an account?",
+    "auth.register.login": "Login",
+    "auth.register.error.passwordMatch": "Passwords do not match",
+    "auth.register.error.generic": "Registration failed",
+
+    // Image Upload
+    "upload.instruction.disease": "Upload a clear image of the affected plant part for disease analysis",
+    "upload.instruction.pest": "Upload a clear image of the pest or affected area for pest identification",
+    "upload.button.disease": "Upload Plant Image",
+    "upload.button.pest": "Upload Pest Image",
+    "upload.loading": "Analyzing...",
+    "upload.error.invalidType": "Please upload an image file",
+    "upload.error.tooLarge": "Image must be less than 5MB",
+    "upload.error.disease": "Failed to analyze disease. Please try again.",
+    "upload.error.pest": "Failed to analyze pest. Please try again.",
+    "upload.success.disease": "Disease analysis complete",
+    "upload.success.pest": "Pest analysis complete",
     "service.knowledgeHub.title": "Knowledge Hub",
     "service.knowledgeHub.description": "Access farming guides, best practices, and educational resources for sustainable agriculture.",
     "service.farmManagement.title": "Farm Management",
@@ -139,6 +199,7 @@ const translations: Record<Language, Record<string, string>> = {
     "auth.login.noAccount": "खाता नहीं है?",
     "auth.login.createAccount": "अभी बनाएं",
     "auth.login.error": "अमान्य ईमेल या पासवर्ड। कृपया सुनिश्चित करें कि आपने पहले से ही एक खाता पंजीकृत किया है और फिर से प्रयास करें।",
+  "auth.login.success": "लॉगिन सफल",
     
     "auth.register.title": "खाता बनाएं",
     "auth.register.subtitle": "हमारे प्लेटफॉर्म का उपयोग करने वाले हजारों किसानों में शामिल हों",
@@ -211,6 +272,7 @@ const translations: Record<Language, Record<string, string>> = {
     "auth.login.noAccount": "खाते नाही?",
     "auth.login.createAccount": "आता तयार करा",
     "auth.login.error": "अवैध ईमेल किंवा पासवर्ड. कृपया सुनिश्चित करा की तुम्ही आधीच खाते नोंदणीकृत केले आहे आणि पुन्हा प्रयत्न करा.",
+  "auth.login.success": "यशस्वीपणे लॉगिन",
     
     "auth.register.title": "खाते तयार करा",
     "auth.register.subtitle": "आमच्या प्लॅटफॉर्मचा वापर करणाऱ्या हजारो शेतकऱ्यांमध्ये सामील व्हा",
@@ -283,6 +345,7 @@ const translations: Record<Language, Record<string, string>> = {
     "auth.login.noAccount": "ఖాతా లేదా?",
     "auth.login.createAccount": "ఇప్పుడు సృష్టించండి",
     "auth.login.error": "చెల్లని ఇమెయిల్ లేదా పాస్‌వర్డ్. దయచేసి మీరు ఇప్పటికే ఖాతాను నమోదు చేసుకున్నారని నిర్ధారించుకోండి మరియు మళ్లీ ప్రయత్నించండి.",
+    "auth.login.success": "లాగిన్ విజయవంతం",
     
     "auth.register.title": "ఖాతా సృష్టించండి",
     "auth.register.subtitle": "మా ప్లాట్‌ఫారమ్‌ను ఉపయోగిస్తున్న వేలాది మంది రైతులలో చేరండి",
@@ -355,6 +418,7 @@ const translations: Record<Language, Record<string, string>> = {
     "auth.login.noAccount": "கணக்கு இல்லையா?",
     "auth.login.createAccount": "இப்போது உருவாக்கவும்",
     "auth.login.error": "தவறான மின்னஞ்சல் அல்லது கடவுச்சொல். தயவுசெய்து நீங்கள் ஏற்கனவே ஒரு கணக்கைப் பதிவு செய்துள்ளீர்கள் என்பதை உறுதிப்படுத்தி மீண்டும் முயற்சிக்கவும்.",
+    "auth.login.success": "உள்நுழைவு வெற்றியடைந்தது",
     
     "auth.register.title": "கணக்கு உருவாக்கவும்",
     "auth.register.subtitle": "எங்கள் தளத்தைப் பயன்படுத்தும் ஆயிரக்கணக்கான விவசாயிகளுடன் சேரவும்",

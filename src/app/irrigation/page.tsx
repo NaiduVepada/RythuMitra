@@ -6,10 +6,14 @@ import PageHeader from "@/components/PageHeader";
 import WeatherWidget from "@/components/WeatherWidget";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import { useState } from "react";
 import { Droplets, Calendar, Clock, AlertCircle, CheckCircle } from "lucide-react";
 
 export default function SmartIrrigationPage() {
-  const irrigationSchedule = [
+  const [irrigationSchedule, setIrrigationSchedule] = useState([
     {
       day: "Monday",
       time: "6:00 AM",
@@ -38,7 +42,30 @@ export default function SmartIrrigationPage() {
       zone: "Field C",
       status: "scheduled",
     },
-  ];
+  ]);
+
+  const [showAdjust, setShowAdjust] = useState(false);
+  const [form, setForm] = useState({ day: "", time: "", duration: "", zone: "" });
+
+  async function submitSchedule(e: React.FormEvent) {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/irrigation/schedule", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error("Failed to save schedule");
+      const newEntry = await res.json();
+      setIrrigationSchedule((s) => [newEntry, ...s]);
+      setShowAdjust(false);
+      setForm({ day: "", time: "", duration: "", zone: "" });
+      toast.success("Schedule updated");
+    } catch (err) {
+      console.error(err);
+      toast.error("Could not update schedule");
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -132,7 +159,35 @@ export default function SmartIrrigationPage() {
                   </div>
                 ))}
               </div>
-              <Button className="w-full mt-6">Adjust Schedule</Button>
+              <Button className="w-full mt-6" onClick={() => setShowAdjust((v) => !v)}>Adjust Schedule</Button>
+              {showAdjust && (
+                <form onSubmit={submitSchedule} className="mt-4 space-y-3">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label htmlFor="day">Day</Label>
+                      <Input id="day" value={form.day} onChange={(e) => setForm({ ...form, day: e.target.value })} required />
+                    </div>
+                    <div>
+                      <Label htmlFor="time">Time</Label>
+                      <Input id="time" value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })} required />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label htmlFor="duration">Duration</Label>
+                      <Input id="duration" value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })} required />
+                    </div>
+                    <div>
+                      <Label htmlFor="zone">Zone</Label>
+                      <Input id="zone" value={form.zone} onChange={(e) => setForm({ ...form, zone: e.target.value })} required />
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button type="submit">Save</Button>
+                    <Button variant="outline" onClick={() => setShowAdjust(false)}>Cancel</Button>
+                  </div>
+                </form>
+              )}
             </CardContent>
           </Card>
 
